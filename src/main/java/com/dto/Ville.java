@@ -18,7 +18,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Ville implements Serializable {
 
-
     private String codeCommune;
 
     private String nomCommune;
@@ -28,6 +27,9 @@ public class Ville implements Serializable {
     private String libelleAcheminement;
 
     private String ligne;
-    //private Coordonnee coordonnee;
+
+    private String latitude;
+
+    private String longitude;
 
 }
