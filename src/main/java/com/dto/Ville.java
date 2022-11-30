@@ -5,10 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 
 
@@ -17,19 +13,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Ville implements Serializable {
-
     private String codeCommune;
-
     private String nomCommune;
-
     private String codePostal;
-
     private String libelleAcheminement;
-
     private String ligne;
-
     private String latitude;
-
     private String longitude;
-
 }
