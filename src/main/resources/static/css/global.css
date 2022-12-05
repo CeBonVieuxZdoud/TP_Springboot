@@ -1,0 +1,17 @@
+body{
+    text-align: center;
+}
+.wrapper{
+    font-family: "Segoe UI";
+}
+.form-label,.distance, .température{
+    font-size: large;
+}
+
+.listeContainer{
+    width: 80%;
+    margin: auto;
+}
+.btn-group{
+    padding: 5px;
+}

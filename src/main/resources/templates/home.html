@@ -1,37 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="http://fonts.cdnfonts.com/css/roboto" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/styles/global.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/global.css}">
     <meta charset="UTF-8">
     <title>Accueil</title>
 </head>
 <body>
     <div class="wrapper">
-        <label>
-            Choisissez votre première ville
-            <input id="input1" list="list1" onchange="updateButtonVille()">
+        <h1>Calcul de distance entre deux villes</h1>
+        <label class="form-label">
+            Choisissez la première ville
+            <input class="form-control" id="input1" list="list1" onchange="updateButtonVille()">
         </label>
         <datalist class="wrapper__listVilles" id="list1" >
             <option th:value="${ville.nomCommune}" th:each="ville: ${villes}" class="wrapper__listVilles__villeChoisie" th:onclick="console.log('click')">
         </datalist>
-        <button class="wrapper__boutonDistance" id="boutonDistance" onclick="calculerDistance()" disabled>Calculer distance</button>
-        <label>
-            Choisissez votre deuxième ville
-            <input id="input2" list="list2" onchange="updateButtonVille()">
+        <button type="button" class="btn btn-info" id="boutonDistance" onclick="calculerDistance()" disabled>Calculer distance</button>
+        <label class="form-label">
+            Choisissez la seconde ville
+            <input class="form-control" id="input2" list="list2" onchange="updateButtonVille()">
         </label>
         <datalist class="wrapper__listContainer" id="list2" >
             <option th:value="${ville.nomCommune}" th:each="ville: ${villes}" class="wrapper__listVilles__villeChoisie" th:onclick="console.log('click')">
         </datalist>
         <div id="distance" class="distance"></div>
+        <div id="température" class="température"></div>
     </div>
+    <button type="button" class="btn btn-primary btn-lg" th:attr="onclick=${'goToList()'}">Liste</button>
 </body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script th:inline="javascript">
-    var villes  = /*[[${villes}]]*/ [];
-    var ville1 = null;
-    var ville2 = null;
+    const villes = /*[[${villes}]]*/ [];
+    let ville1 = null;
+    let ville2 = null;
+
     function addVille(){
-        for(var i = 0; i < villes.length; i++){
+        for(let i = 0; i < villes.length; i++){
             if (villes[i].nomCommune===document.getElementById("input1").value){
                 ville1=villes[i];
             }else if (villes[i].nomCommune===document.getElementById("input2").value) {
@@ -41,20 +48,21 @@
     }
 
     function updateButtonVille(){
+        addVille();
         if(document.getElementById("input1").value!=="" && document.getElementById("input2").value!==""){
             document.getElementById("boutonDistance").disabled=false;
+
         }else{
             document.getElementById("boutonDistance").disabled=true;
         }
     }
 
     function calculerDistance(){
-        addVille();
         //https://www.geeksforgeeks.org/program-distance-two-points-earth/#:~:text=For%20this%20divide%20the%20values,is%20the%20radius%20of%20Earth.
-        lon1 =  ville1.longitude * Math.PI / 180;
-        lon2 = ville2.longitude * Math.PI / 180;
-        lat1 = ville1.latitude * Math.PI / 180;
-        lat2 = ville2.latitude * Math.PI / 180;
+        const lon1 =  ville1.longitude * Math.PI / 180;
+        const lon2 = ville2.longitude * Math.PI / 180;
+        const lat1 = ville1.latitude * Math.PI / 180;
+        const lat2 = ville2.latitude * Math.PI / 180;
         // Haversine formula
         let dlon = lon2 - lon1;
         let dlat = lat2 - lat1;
@@ -70,7 +78,13 @@
 
         const distance = c * r;
         console.log(distance);
-        document.getElementById("distance").innerHTML = "distance: " + distance +" km";
+        document.getElementById("distance").innerHTML = "La distance entre les deux villes est de : " + distance +" km";
+    }
+    function loadWeather(lat,long){
+
+    }
+    function goToList() {
+        window.location.href = "list";
     }
 </script>
 </html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+    <meta charset="UTF-8">
+    <title>Liste des villes</title>
+    <link rel="stylesheet" th:href="@{/styles/global.css}">
+</head>
+<body>
+<h1>Liste des villes disponibles</h1>
+<div class="listeContainer wrapper">
+    <div class="list-group">
+        <th:block th:each="ville, state: ${villes}">
+            <th:block th:if="${state.index}<50">
+                <div class="villeContainer list-group-item" th:id="'villeContainer'+${state.count}">
+                    <span class="ville lead" th:id="'ville'+${state.count}" th:text="${ville.nomCommune}"></span>
+                    <button class="listButton btn btn-outline-primary" th:attr="onclick=${'editVille(&quot;'+state.count+'&quot;)'}">Modifier</button>
+                </div>
+            </th:block>
+        </th:block>
+    </div>
+    <div class="btn-group" role="group">
+        <button class="listButton btn btn-danger" th:attr="onclick=${'goToPage(0)'}">Page d'avant</button>
+        <button class="listButton btn btn-success" th:attr="onclick=${'goToPage(1)'}">Page d'après</button>
+    </div>
+</div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script th:inline="javascript">
+    let page = 1;
+    const villes = /*[[${villes}]]*/ [];
+    const maxPage = Math.ceil(villes.length / 50);
+    function goToPage(state) {
+        if(state==0&&page!=1){
+            page--;
+        }else if(state==1 && page+1!=maxPage){
+            page++;
+        }
+        console.log(page);
+        console.log(maxPage);
+        console.log(50*(page-1));
+        let lengthList=(50*page);
+        console.log(lengthList);
+        if((page+1)==maxPage){
+            lengthList=villes.length;
+            for(let i = lengthList; i < maxPage*50; i++){
+                document.getElementById("ville"+(i+1-lengthList)).hidden=true;
+            }
+        }
+
+        for(let i = 50*(page-1); i < lengthList; i++){
+            document.getElementById("ville"+(i+1-50*(page-1))).hidden=false;
+            document.getElementById("ville"+(i+1-50*(page-1))).innerHTML=villes[i].nomCommune;
+        }
+    }
+    function editVille(idVille){
+        for(let i = 0; i < villes.length; i++){
+            if (villes[i].nomCommune===document.getElementById('ville'+idVille).innerHTML){
+                window.location.href = "http://localhost:8081/edit?codeCommune=" + villes[i].codeCommune;
+            }
+        }
+    }
+</script>
+</html>
