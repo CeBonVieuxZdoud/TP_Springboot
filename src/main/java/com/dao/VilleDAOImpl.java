@@ -17,7 +17,6 @@ public class VilleDAOImpl implements VilleDAO{
     public ArrayList<Ville> findAllVilles() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/TWIC";
         ArrayList<Ville> listVille = new ArrayList<>();
-        //Connection conn = null;
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url, "TWIC", "network");
