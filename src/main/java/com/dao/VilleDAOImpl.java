@@ -16,31 +16,32 @@ public class VilleDAOImpl implements VilleDAO{
 
     public ArrayList<Ville> findAllVilles() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/TWIC";
-
-        Connection conn = DriverManager.getConnection(url,"TWIC","network");
-
-        String sql = "Select * from ville_france";
-
-        Statement statement = conn.createStatement();
-
-        ResultSet bdd = statement.executeQuery(sql);
-
         ArrayList<Ville> listVille = new ArrayList<>();
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url,"TWIC","network");
 
-        while (bdd.next()) {
-            this.i += 1;
-            Ville ville = new Ville();
-            ville.setCodeCommune(bdd.getString(1));
-            ville.setNomCommune(bdd.getString(2));
-            ville.setCodePostal(bdd.getString(3));
-            ville.setLibelleAcheminement(bdd.getString(4));
-            ville.setLigne(bdd.getString(5));
-            ville.setLatitude(bdd.getString(6));
-            ville.setLongitude(bdd.getString(7));
-            listVille.add(ville);
+            String sql = "Select * from ville_france";
+
+            Statement statement = conn.createStatement();
+
+            ResultSet bdd = statement.executeQuery(sql);
+
+            while (bdd.next()) {
+                this.i += 1;
+                Ville ville = new Ville();
+                ville.setCodeCommune(bdd.getString(1));
+                ville.setNomCommune(bdd.getString(2));
+                ville.setCodePostal(bdd.getString(3));
+                ville.setLibelleAcheminement(bdd.getString(4));
+                ville.setLigne(bdd.getString(5));
+                ville.setLatitude(bdd.getString(6));
+                ville.setLongitude(bdd.getString(7));
+                listVille.add(ville);
+            }
+        }finally {
+            conn.close();
         }
-        conn.close();
-
         return listVille;
     }
 
