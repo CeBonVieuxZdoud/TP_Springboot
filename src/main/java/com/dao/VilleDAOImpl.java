@@ -1,12 +1,8 @@
 package com.dao;
 
 import com.dto.Ville;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -41,7 +37,7 @@ public class VilleDAOImpl implements VilleDAO{
                 listVille.add(ville);
             }
         } finally {
-            if(conn != null){
+            if(conn != null && statement!=null){
                 conn.close();
                 statement.close();
             }
@@ -70,7 +66,7 @@ public class VilleDAOImpl implements VilleDAO{
             ville.setLatitude(bdd.getString(6));
             ville.setLongitude(bdd.getString(7));
         } finally {
-            if(conn != null){
+            if(conn != null && statement!=null){
                 conn.close();
                 statement.close();
             }
@@ -97,7 +93,7 @@ public class VilleDAOImpl implements VilleDAO{
             ville.setLatitude(bdd.getString(6));
             ville.setLongitude(bdd.getString(7));
         } finally {
-            if(conn != null){
+            if(conn != null && statement!=null){
                 conn.close();
                 statement.close();
             }
@@ -122,7 +118,7 @@ public class VilleDAOImpl implements VilleDAO{
             preparedStatement.setString(7,ville.getCodeCommune());
             int bdd = preparedStatement.executeUpdate();
         } finally {
-            if(conn != null){
+            if(conn != null && preparedStatement!=null){
                 conn.close();
                 preparedStatement.close();
             }
@@ -140,7 +136,7 @@ public class VilleDAOImpl implements VilleDAO{
             preparedStatement.setString(1,codeCommune);
             int bdd = preparedStatement.executeUpdate();
         } finally {
-            if(conn != null){
+            if(conn != null && preparedStatement!=null){
                 conn.close();
                 preparedStatement.close();
             }
