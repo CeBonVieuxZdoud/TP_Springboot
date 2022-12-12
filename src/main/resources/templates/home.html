@@ -24,10 +24,13 @@
         <datalist class="wrapper__listContainer" id="list2" >
             <option th:value="${ville.nomCommune}" th:each="ville: ${villes}" class="wrapper__listVilles__villeChoisie" th:onclick="console.log('click')">
         </datalist>
+        <div class ="temperatures">
+            <div class="temperature" id="tempVille1"></div>
+            <div class="temperature" id="tempVille2"></div>
+        </div>
         <div id="distance" class="distance"></div>
-        <div id="température" class="température"></div>
     </div>
-    <button type="button" class="btn btn-primary btn-lg" th:attr="onclick=${'goToList()'}">Liste</button>
+    <button type="button" class="btn btn-primary btn-lg toList" th:attr="onclick=${'goToList()'}">Liste</button>
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -51,7 +54,6 @@
         addVille();
         if(document.getElementById("input1").value!=="" && document.getElementById("input2").value!==""){
             document.getElementById("boutonDistance").disabled=false;
-
         }else{
             document.getElementById("boutonDistance").disabled=true;
         }
@@ -78,10 +80,22 @@
 
         const distance = c * r;
         console.log(distance);
+        loadWeather(lat1,lon1,1);
+        loadWeather(lat2,lon2,2);
         document.getElementById("distance").innerHTML = "La distance entre les deux villes est de : " + distance +" km";
     }
-    function loadWeather(lat,long){
-
+    function loadWeather(lat,lon,index){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                const parsed = JSON.parse(xhttp.responseText);
+                // Typical action to be performed when the document is ready:
+                document.getElementById("tempVille"+index).innerHTML =
+                    "Température de la ville " + index +  " = " + parsed.main.temp + "°C</div></div>";
+            }
+        };
+        xhttp.open("POST", "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=78fe632df45f8344f99b339a9c24a6e9&units=metric", true);
+        xhttp.send();
     }
     function goToList() {
         window.location.href = "list";

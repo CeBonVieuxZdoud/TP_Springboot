@@ -83,4 +83,30 @@ public class VilleDAOImpl implements VilleDAO{
         conn.close();
         return ville;
     }
+
+    public void editVille(Ville ville) throws SQLException{
+        String url = "jdbc:mysql://localhost:3306/TWIC";
+        Connection conn = DriverManager.getConnection(url,"TWIC","network");
+        String sql = "UPDATE ville_france SET Nom_commune = ?, Code_Postal = ?, Libelle_acheminement = ?, Ligne_5 = ?,Latitude = ?, Longitude = ? where Code_commune_INSEE = ?";
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setString(1,ville.getNomCommune());
+        preparedStatement.setString(2,ville.getCodePostal());
+        preparedStatement.setString(3,ville.getLibelleAcheminement());
+        preparedStatement.setString(4,ville.getLigne());
+        preparedStatement.setString(5,ville.getLatitude());
+        preparedStatement.setString(6,ville.getLongitude());
+        preparedStatement.setString(7,ville.getCodeCommune());
+        int bdd = preparedStatement.executeUpdate();
+        conn.close();
+    }
+
+    public void deleteVille(String codeCommune) throws SQLException{
+        String url = "jdbc:mysql://localhost:3306/TWIC";
+        Connection conn = DriverManager.getConnection(url,"TWIC","network");
+        String sql = "DELETE from ville_france where Code_commune_INSEE = ?";
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setString(1,codeCommune);
+        int bdd = preparedStatement.executeUpdate();
+        conn.close();
+    }
 }

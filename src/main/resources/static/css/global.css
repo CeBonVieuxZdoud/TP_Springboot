@@ -15,3 +15,7 @@ body{
 .btn-group{
     padding: 5px;
 }
+
+.temperature{
+    display: inline-block;
+}
