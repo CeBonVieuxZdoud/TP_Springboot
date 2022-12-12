@@ -18,12 +18,13 @@ public class VilleDAOImpl implements VilleDAO{
         String url = "jdbc:mysql://localhost:3306/TWIC";
         ArrayList<Ville> listVille = new ArrayList<>();
         Connection conn = null;
+        Statement statement = null;
         try {
             conn = DriverManager.getConnection(url, "TWIC", "network");
 
             String sql = "Select * from ville_france";
 
-            Statement statement = conn.createStatement();
+            statement = conn.createStatement();
 
             ResultSet bdd = statement.executeQuery(sql);
 
@@ -42,6 +43,7 @@ public class VilleDAOImpl implements VilleDAO{
         } finally {
             if(conn != null){
                 conn.close();
+                statement.close();
             }
         }
         return listVille;
@@ -50,12 +52,13 @@ public class VilleDAOImpl implements VilleDAO{
     public Ville findVilleByName(String name) throws SQLException{
         String url = "jdbc:mysql://localhost:3306/TWIC";
         Connection conn = null;
+        Statement statement = null;
         Ville ville = new Ville();
         try {
             conn = DriverManager.getConnection(url, "TWIC", "network");
 
             String sql = "Select * from ville_france where Nom_commune = "+name;
-            Statement statement = conn.createStatement();
+            statement = conn.createStatement();
             ResultSet bdd = statement.executeQuery(sql);
             ArrayList<Ville> listVille = new ArrayList<>();
             bdd.next();
@@ -69,6 +72,7 @@ public class VilleDAOImpl implements VilleDAO{
         } finally {
             if(conn != null){
                 conn.close();
+                statement.close();
             }
         }
         return ville;
@@ -76,11 +80,12 @@ public class VilleDAOImpl implements VilleDAO{
     public Ville findVilleByCodeCommune(String codeCommune) throws SQLException{
         String url = "jdbc:mysql://localhost:3306/TWIC";
         Connection conn = null;
+        Statement statement = null;
         Ville ville = new Ville();
         try {
             conn = DriverManager.getConnection(url, "TWIC", "network");
             String sql = "Select * from ville_france where Code_commune_INSEE = "+codeCommune;
-            Statement statement = conn.createStatement();
+            statement = conn.createStatement();
             ResultSet bdd = statement.executeQuery(sql);
             ArrayList<Ville> listVille = new ArrayList<>();
             bdd.next();
@@ -94,6 +99,7 @@ public class VilleDAOImpl implements VilleDAO{
         } finally {
             if(conn != null){
                 conn.close();
+                statement.close();
             }
         }
         return ville;
@@ -102,10 +108,11 @@ public class VilleDAOImpl implements VilleDAO{
     public void editVille(Ville ville) throws SQLException{
         String url = "jdbc:mysql://localhost:3306/TWIC";
         Connection conn = null;
+        PreparedStatement preparedStatement = null;
         try {
             conn = DriverManager.getConnection(url, "TWIC", "network");
             String sql = "UPDATE ville_france SET Nom_commune = ?, Code_Postal = ?, Libelle_acheminement = ?, Ligne_5 = ?,Latitude = ?, Longitude = ? where Code_commune_INSEE = ?";
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1,ville.getNomCommune());
             preparedStatement.setString(2,ville.getCodePostal());
             preparedStatement.setString(3,ville.getLibelleAcheminement());
@@ -117,6 +124,7 @@ public class VilleDAOImpl implements VilleDAO{
         } finally {
             if(conn != null){
                 conn.close();
+                preparedStatement.close();
             }
         }
     }
@@ -124,15 +132,17 @@ public class VilleDAOImpl implements VilleDAO{
     public void deleteVille(String codeCommune) throws SQLException{
         String url = "jdbc:mysql://localhost:3306/TWIC";
         Connection conn = null;
+        PreparedStatement preparedStatement = null;
         try {
             conn = DriverManager.getConnection(url, "TWIC", "network");
             String sql = "DELETE from ville_france where Code_commune_INSEE = ?";
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1,codeCommune);
             int bdd = preparedStatement.executeUpdate();
         } finally {
             if(conn != null){
                 conn.close();
+                preparedStatement.close();
             }
         }
     }
